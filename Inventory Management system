@@ -1,0 +1,62 @@
+import time
+fd=open('Inventory.txt','r')
+txt=fd.read().split("\n")
+fd.close()
+name=input("Enter your name: ")
+email=input("Enter your EmaidID for updates: ")
+phoneno=input("Enter your phone no: ")
+a=input('Enter the product id: ')
+b=input('Enter the quantity: ')
+currentproducts=[]
+print()
+
+for i in txt:
+    prod=i.split(',')
+    if a==i.split(',')[0]:
+        if int(b)<=int(prod[3]):
+            print("The current Bill:")
+            print()
+            print("The product id:             ",prod[0])
+            print("The product name:           ",prod[1])
+            print("The product price/unit:     ",prod[2])
+            print("The product quantity:       ",a)
+            print("---------------------------------------")
+            print("Amount =                    ",int(b)*int(prod[2]))
+            print("---------------------------------------")
+            prod[3]=int(prod[3])-int(b)
+            fd=open('Sales.txt','a')
+            salesdata="Name: "+name+'\n'+"Email: "+email+"\n"+"Phone Number: "+str(phoneno)+"\n"+"Product ID: "+str(a)+"\n"+"Quantity: "+str(b)+"\n"+"Total amount: "+str(int(b)*int(prod[2]))+"\n"+"Time: "+time.ctime()+"\n\n"
+            fd.write(salesdata)
+        else:
+            print("Sorry we are not having the quantity you want.")
+            print("We are having only ",prod[3],"only")
+            print("Do you like to purchase it the whole or no:")
+            print("Enter y for yes and n for no")
+            print()
+            s=input()
+            if s=='y' or s=='Y':
+                print("The current Bill:")
+                print()
+                print("The product id:             ",prod[0])
+                print("The product name:           ",prod[1])
+                print("The product price/unit:     ",prod[2])
+                print("The product quantity:       ",prod[3])
+                print("---------------------------------------")
+                print("Amount =                    ",int(prod[3])*int(prod[2]))
+                print("---------------------------------------")
+                prod[3]='0'
+                fd=open('Sales.txt','a')
+                salesdata="Name: "+name+'\n'+"Email: "+email+"\n"+"Phone Number: "+str(phoneno)+"\n"+"Product ID: "+str(a)+"\n"+"Quantity: "+str(b)+"\n"+"Total amount: "+str(int(b)*int(prod[2]))+"\n"+"Time: "+time.ctime()+"\n\n"
+                fd.write(salesdata)
+            else:
+                print("Thank you for visiting! ","Please visit again")
+    currentproducts.append(prod)
+fd=open('Inventory.txt','w')
+lst=[]
+for i in currentproducts:
+    a=str(i[0])+','+str(i[1])+','+str(i[2])+','+str(i[3])+'\n'
+    lst.append(a)
+lst[-1]=lst[-1][:-1]
+for i in lst:
+    fd.write(i)
+fd.close()
